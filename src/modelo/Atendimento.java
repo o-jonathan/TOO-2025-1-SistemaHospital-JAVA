@@ -56,7 +56,7 @@ public class Atendimento implements Exibivel {
             leito.setOcupado(true);
             this.local = local;
         }
-        else if (local instanceof Consultorio && internacao) {
+        else if (local instanceof Consultorio && !internacao) {
             this.local = local;
         }
         else
