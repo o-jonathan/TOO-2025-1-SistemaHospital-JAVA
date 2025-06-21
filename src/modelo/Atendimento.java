@@ -18,14 +18,18 @@ public class Atendimento implements Exibivel {
     private LocalDateTime dataFim;
     private Paciente paciente;
     private Sala local;
-    private String tipo;
+    private boolean internacao;
     private List<Enfermeiro> enfermeiros = new ArrayList<>();
     private Medico responsavel;
     private DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy '-' HH:mm");
     
-    public Atendimento(String tipo) {
+    /**
+     * 
+     * @param internacao 0 = cosulta, 1 = internação
+     */
+    public Atendimento(boolean internacao) {
         dataInicio = LocalDateTime.now();
-        this.tipo = tipo;
+        this.internacao = internacao;
     }
 
     public LocalDateTime getDataInicio() {
@@ -47,12 +51,12 @@ public class Atendimento implements Exibivel {
         return local;
     }
     public void setLocal(Sala local) {
-        if (local instanceof Leito && "Internacao".equals(tipo)) {
+        if (local instanceof Leito && internacao) {
             Leito leito = (Leito) local;
             leito.setOcupado(true);
             this.local = local;
         }
-        else if (local instanceof Consultorio && "Consulta".equals(tipo)) {
+        else if (local instanceof Consultorio && internacao) {
             this.local = local;
         }
         else
@@ -82,10 +86,6 @@ public class Atendimento implements Exibivel {
             dataFim = LocalDateTime.now();
         }
     }
-    
-    public void addProntuario() {
-        paciente.prontuario.add(this);
-    }
 
     @Override
     public String mostrarDados() {
@@ -98,8 +98,7 @@ public class Atendimento implements Exibivel {
             aux += "\nPaciente: " + paciente;
         if (local != null)
             aux += "\nLocal: " + local;
-        if (tipo != null)
-            aux += "\nTipo: " + tipo;
+        aux += "\nTipo: " + (internacao ? "internacao" : "consulta");
         if (responsavel != null)
             aux += "\nMedico Responsavel: " + responsavel;
         if (enfermeiros != null)
@@ -109,14 +108,14 @@ public class Atendimento implements Exibivel {
 
     @Override
     public String toString() {
-        String aux = "(" + tipo + ") " + dataInicio.format(formatoData);
+        String aux = "(" + (internacao ? "internacao" : "consulta") + ") " + dataInicio.format(formatoData);
         if (dataFim != null)
             aux += " a " + dataFim.format(formatoData);
         aux += " | " + responsavel;
         return aux;
     }
 
-    public String getTipo() {
-        return tipo;
+    public boolean isInternacao() {
+        return internacao;
     }
 }

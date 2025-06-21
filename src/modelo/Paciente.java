@@ -16,11 +16,15 @@ import java.util.List;
 public class Paciente extends Pessoa {
     private String genero;
     private LocalDate dataNascimento;
-    List<Atendimento> prontuario = new ArrayList<>();
+    private List<Atendimento> prontuario = new ArrayList<>();
     private DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     
     public List<Atendimento> getProntuario() {
         return prontuario;
+    }
+    public void addProntuario(Atendimento atendimento)
+    {
+        prontuario.add(atendimento);
     }
     
     public String getGenero() {

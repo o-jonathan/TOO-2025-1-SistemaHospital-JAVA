@@ -47,21 +47,22 @@ public class Teste {
         c.setLocal("213");
         c.setDescricao("Consultorio");
         
-        Atendimento aI = new Atendimento("Internacao");
+        Atendimento aI = new Atendimento(true);
         aI.setLocal(l);
         aI.setPaciente(p);
         aI.setResponsavel(m);
         aI.addEnfermeiros(e);
         aI.darAlta();
-        aI.addProntuario();
         
-        Atendimento aC = new Atendimento("Consulta");
+        Atendimento aC = new Atendimento(false);
         aC.setLocal(c);
         aC.setPaciente(p);
         aC.setResponsavel(m);
         aC.addEnfermeiros(e);
         aC.darAlta();
-        aC.addProntuario();
+        
+        p.addProntuario(aI);
+        p.addProntuario(aC);
         
         System.out.println(m.mostrarDados());
         System.out.println("");
